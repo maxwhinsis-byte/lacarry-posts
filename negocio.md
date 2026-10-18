@@ -4,10 +4,10 @@ Datos tomados del folleto de ofertas de octubre 2026 (Grupo Avance) y de la biog
 
 ## Contacto y ubicación
 - Dirección: Horacio García Lagos y Transversal, Parque de Solymar
-- Teléfono: 2698 2111 (en la última página del folleto aparece como "2698 211", casi seguro un error de impresión; confirmar con el local)
+- Teléfono fijo: 2696 2111 (confirmado por el dueño; el folleto dice 2698 2111 / 2698 211, que son errores de impresión)
 - Celular / WhatsApp: 099 387 249
 - Instagram: @lacarrymarket
-- Horario (según la bio de Instagram): de 7:30 a 23 hs
+- Horario: todos los días de 7:30 a 23 hs (el dueño dijo "7:30 a 11", que coincide con las 23 hs de la bio de Instagram)
 - Envíos a domicilio: gratis, rápidos y seguros hasta la puerta (según la bio)
 - Pertenece al Grupo Avance (grupo de supermercados aliados)
 
