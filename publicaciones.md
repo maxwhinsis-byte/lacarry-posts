@@ -1,7 +1,8 @@
 # Registro de publicaciones — @lacarrymarket
 
-Una fila por publicación. La tarea automática lee este archivo para no duplicar (una publicación por franja y por día) y para variar el diseño.
+Una fila por pieza. La tarea automática lee este archivo para no duplicar (una pieza por franja y por día), para variar el diseño y para contar las publicaciones de feed de la semana (máximo 2 por semana, de lunes a domingo; todo lo demás son historias).
 Franjas: `mañana` (alrededor de las 10 h) y `tarde` (alrededor de las 18 h). `prueba` = publicación de prueba, no cuenta como ninguna de las dos.
+El formato empieza siempre con `Historia`, `Imagen de feed`, `Carrusel` o `Reel`.
 
 | Fecha | Franja | Formato | Tema y diseño | Productos y precios usados | Resultado | Permalink o error |
 |---|---|---|---|---|---|---|
