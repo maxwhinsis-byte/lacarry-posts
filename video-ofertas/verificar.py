@@ -25,7 +25,7 @@ def main():
     duracion = float(datos["format"]["duration"])
 
     claves = [float(v) for v in probar("-select_streams", "v", "-skip_frame", "nokey", "-show_entries", "frame=pts_time",
-                                       "-of", "csv=p=0", args.video).split()]
+                                       "-of", "csv=p=0", args.video).replace(",", " ").split()]
     saltos = sorted({round(b - a, 3) for a, b in zip(claves, claves[1:])})
 
     medido = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", args.video, "-map", "0:a", "-af", "ebur128=peak=true",
