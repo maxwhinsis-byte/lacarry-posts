@@ -265,8 +265,8 @@ class Recursos:
         escala = 2
         capa = Image.new("RGBA", (ANCHO * escala, ALTO * escala), (0, 0, 0, 0))
         for x0, y0, dx, dy, onda, color, grosor in [
-            (-20, 620, 150, -700, 44, (24, 110, 200), 13),
-            (45, 720, 90, -420, 30, VERDE, 11),
+            (-34, 740, 34, -780, 24, (24, 110, 200), 13),
+            (1252, 740, 18, -300, 16, VERDE, 10),
             (690, -20, 240, 110, 34, VERDE, 11),
             (1040, -24, 280, 90, 30, (24, 110, 200), 12),
         ]:
@@ -280,7 +280,7 @@ class Recursos:
             "linea2": texto("ofertas de", FUENTE_MEDIA, 86, azul),
             "mes": texto_ajustado(self.config["mes"] + "!", FUENTE_FUERTE, 660, 190, ROJO,
                                   sombra=(120, 40, 30, 120), borde=3),
-            "grupo": texto("Grupo Avance · Creciendo juntos", FUENTE_MEDIA, 38, azul),
+            "grupo": texto("Grupo Avance", FUENTE_MEDIA, 50, azul),
             "logo": self.logo.resize((206, 206), Image.LANCZOS),
             "sello": self.sello.resize((540, round(540 * self.sello.height / self.sello.width)), Image.LANCZOS),
             "globos": self.globos.resize((318, round(318 * self.globos.height / self.globos.width)), Image.LANCZOS),
@@ -314,8 +314,8 @@ class Recursos:
                        (lado / 2 + lado * math.cos(a - .05), lado / 2 + lado * math.sin(a - .05)),
                        (lado / 2 + lado * math.cos(a + .05), lado / 2 + lado * math.sin(a + .05))], fill=70)
         centro = Image.new("L", (lado, lado), 0)
-        ImageDraw.Draw(centro).ellipse((90, 90, lado - 90, lado - 90), fill=255)
-        rayos = ImageChops.multiply(rayos.filter(ImageFilter.GaussianBlur(6)), centro.filter(ImageFilter.GaussianBlur(100)))
+        ImageDraw.Draw(centro).ellipse((190, 190, lado - 190, lado - 190), fill=255)
+        rayos = ImageChops.multiply(rayos.filter(ImageFilter.GaussianBlur(6)), centro.filter(ImageFilter.GaussianBlur(70)))
         capa = Image.new("RGBA", (lado, lado), (255, 222, 130, 0))
         capa.putalpha(rayos)
         return {
@@ -399,7 +399,7 @@ def escena_portada(rec, f, global_f):
     sx, sy = 942, 268 + 5 * math.sin(t * 1.5)
     entrada = .55 + .45 * rebote((t - 1.95) / .6)
     pegar(lienzo, sello, sx, sy, entrada, aparece(1.95, .3))
-    pegar(lienzo, c["grupo"], 942, 494, 1, aparece(2.5))
+    pegar(lienzo, c["grupo"], 866, 492, 1, aparece(2.5))
 
     if t > 2.5:
         for inicio, dura in ((2.6, .75), (4.1, .75)):

@@ -40,6 +40,11 @@ def recortar_sobre_papel(pieza, papel_rgb):
     etiquetas, _ = ndi.label(papel)
     borde = np.unique(np.concatenate([etiquetas[0], etiquetas[-1], etiquetas[:, 0], etiquetas[:, -1]]))
     fondo = np.isin(etiquetas, borde[borde > 0])
+    puro = np.sqrt(((rgb - papel_rgb) ** 2).sum(axis=2)) < 16
+    puro[:, int(rgb.shape[1] * .5):] = False  # a la derecha del 4, ese tono es brillo de las letras
+    huecos, _ = ndi.label(puro)
+    tamanos = ndi.sum(puro, huecos, range(1, huecos.max() + 1))
+    fondo |= ndi.binary_dilation(np.isin(huecos, np.flatnonzero(tamanos > 400) + 1), iterations=4)  # papel encerrado
     fondo = ndi.binary_dilation(fondo, iterations=2)
     partes, cantidad = ndi.label(~fondo)
     areas = ndi.sum(~fondo, partes, range(1, cantidad + 1))
