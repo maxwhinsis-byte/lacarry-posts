@@ -42,7 +42,7 @@ Reglas de contenido:
 - No publicar ofertas vencidas (fuera de la vigencia que dice el archivo).
 - **No publicar bebidas alcohólicas** (whisky, vino, cerveza, gin, vodka, aperitivos, etc.) salvo que el dueño lo pida expresamente.
 - No inventar promociones, descuentos ni condiciones que no estén en el folleto. No comparar con otros comercios. No prometer "los precios más bajos".
-- Tema del mes: en octubre 2026 es "Octubre tiene sus trucos... y vienen cargados de ofertas" (Halloween: naranja, violeta, verde). Cambiarlo cuando cambie el folleto.
+- Tema del mes: **noviembre 2026 = "4 AÑOS – Creciendo juntos"**, aniversario de Grupo Avance (vigencia 1/11/2026 al 30/11/2026). Estética: fondo crema/kraft, serpentinas verdes y azules, globos, confeti dorado, número "4 AÑOS" dorado con cinta azul, precios en rojo grande. Usar dorado + azul + verde en lugar del naranja/violeta de Halloween (que ya NO se usa). El tono es de festejo: "Cumplimos 4 años creciendo juntos, festejá con ofertas". No dibujar ni copiar el logo de Avance; usar solo el logo de Lacarry. Las ofertas del mes están en `ofertas/2026-11.md` y las cenefas originales (con foto del producto) en `ofertas/2026-11/paginas/pagina-NN.jpg`: se puede recortar la foto de un producto de ahí. Cuando cambie el folleto, cambiar esta línea. Alcohol (marcado 🍷 en el archivo) no se publica salvo pedido del dueño. Las ofertas "2 x $99", "4 x $99" son muy buenas para historias.
 
 ## Paso 2 — Crear el diseño
 Especificaciones (Instagram rechaza lo que no cumple):
@@ -61,13 +61,13 @@ Herramientas:
 **Revisión obligatoria antes de publicar** (abrir la imagen final con la herramienta Read, o un cuadro del video extraído con ffmpeg):
 1. Ortografía y tildes correctas, español rioplatense.
 2. Cada precio coincide con `ofertas/AAAA-MM.md`. Verificarlo dos veces.
-3. La vigencia aparece si hay precios ("Ofertas hasta el 31/10 o hasta agotar stock").
+3. La vigencia aparece si hay precios ("Ofertas hasta el 30/11 o hasta agotar stock").
 4. El logo está, nada queda cortado o ilegible, sin alcohol.
 Si algo falla, corregir y revisar de nuevo (máximo 3 intentos). Si no se logra, publicar una versión más simple y sin precios.
 
 ## Paso 3 — Epígrafe (no aplica a historias)
 - Tono cercano y familiar, 2 a 5 líneas, emojis moderados. Máximo 2200 caracteres.
-- Si hay precios, incluir la vigencia: "Ofertas válidas hasta el 31/10 o hasta agotar stock."
+- Si hay precios, incluir la vigencia: "Ofertas válidas hasta el 30/11 o hasta agotar stock."
 - Cierre fijo: `🛒 Lacarry Market – Calidad, precio y atención` · `🚚 Envíos a domicilio · 📲 WhatsApp 099 387 249 · 📍 Parque de Solymar`
 - 4 a 6 hashtags: `#LacarryMarket #Solymar #Uruguay #Ofertas` más uno o dos del tema.
 
