@@ -30,10 +30,7 @@ SALIDA = 11
 
 # Márgenes pensados para el recorte de bordes de una tele vieja
 ANCHO_TARJETA = 1090
-TARJETA_Y = 34
 RADIO = 24
-BARRA_Y = 692
-BARRA_ALTO = 6
 
 AQUI = Path(__file__).parent
 RECURSOS = AQUI / "recursos"
@@ -332,13 +329,14 @@ class Tarjetas:
         with Image.open(self.archivos[0]) as primera:
             self.alto = round(ANCHO_TARJETA * primera.height / primera.width)
         self.x = (ANCHO - ANCHO_TARJETA) // 2
+        self.y = (ALTO - self.alto) // 2
         self.mascara = tarjeta_mascara(ANCHO_TARJETA, self.alto)
         margen = 40
         sombra = Image.new("L", (ANCHO_TARJETA + margen * 2, self.alto + margen * 2), 0)
         ImageDraw.Draw(sombra).rounded_rectangle((margen, margen + 6, margen + ANCHO_TARJETA, margen + self.alto + 6),
                                                  RADIO, fill=165)
         self.sombra = sombra.filter(ImageFilter.GaussianBlur(14))
-        self.sombra_pos = (self.x - margen, TARJETA_Y - margen)
+        self.sombra_pos = (self.x - margen, self.y - margen)
         self.negro = Image.new("RGB", self.sombra.size, (4, 12, 32))
 
     def cargar(self, indice):
@@ -351,26 +349,19 @@ class Tarjetas:
         mascara_sombra = self.sombra if alfa >= .999 else self.sombra.point(lambda v: int(v * alfa))
         lienzo.paste(self.negro, self.sombra_pos, mascara_sombra)
         mascara = self.mascara
-        x, y = self.x, TARJETA_Y
+        x, y = self.x, self.y
         if abs(escala - 1) > .001:
             tam = (round(ANCHO_TARJETA * escala), round(self.alto * escala))
             tarjeta = tarjeta.resize(tam, Image.BILINEAR)
             mascara = mascara.resize(tam, Image.BILINEAR)
-            x, y = (ANCHO - tam[0]) // 2, TARJETA_Y + (self.alto - tam[1]) // 2
+            x, y = (ANCHO - tam[0]) // 2, self.y + (self.alto - tam[1]) // 2
         if alfa < .999:
             mascara = mascara.point(lambda v: int(v * alfa))
         lienzo.paste(tarjeta, (x, y), mascara)
 
 
-def poner_hud(lienzo, rec, tarjetas, contador, avance):
+def poner_logo(lienzo, rec):
     lienzo.paste(rec.logo_chico, (24, 22), rec.logo_chico)
-    x0, x1 = tarjetas.x, tarjetas.x + ANCHO_TARJETA
-    pista = Image.new("L", (x1 - x0, BARRA_ALTO), 64)
-    lienzo.paste(BLANCO, (x0, BARRA_Y, x1, BARRA_Y + BARRA_ALTO), pista)
-    fin = x0 + int((x1 - x0) * min(avance, 1))
-    if fin > x0:
-        lienzo.paste(DORADO, (x0, BARRA_Y, fin, BARRA_Y + BARRA_ALTO))
-    lienzo.paste(contador, (x1 - contador.width + 24, 668 - contador.height // 2 + 2), contador)
 
 
 def escena_portada(rec, f, global_f):
@@ -449,7 +440,7 @@ def escena_cierre(rec, f, global_f):
     return lienzo
 
 
-def escena_oferta(rec, tarjetas, tarjeta, contador, avance, f, global_f):
+def escena_oferta(rec, tarjetas, tarjeta, f, global_f):
     lienzo = rec.fondo.dibujar(global_f)
     if f < ENTRADA:
         p = (f + 1) / ENTRADA
@@ -458,11 +449,11 @@ def escena_oferta(rec, tarjetas, tarjeta, contador, avance, f, global_f):
         tarjetas.dibujar(lienzo, tarjeta, 1, 1 - suave((f - (CUADROS_OFERTA - SALIDA) + 1) / SALIDA))
     else:
         tarjetas.dibujar(lienzo, tarjeta, 1, 1)
-    poner_hud(lienzo, rec, tarjetas, contador, avance)
+    poner_logo(lienzo, rec)
     return lienzo
 
 
-def escena_corte(rec, tarjetas, contador, avance, f, global_f):
+def escena_corte(rec, f, global_f):
     t = f / FPS
     lienzo = rec.fondo.dibujar(global_f)
     alfa = suave(t / .3) * (1 - suave((f - CUADROS_CORTE + 10) / 10))
@@ -473,7 +464,7 @@ def escena_corte(rec, tarjetas, contador, avance, f, global_f):
     for dx, dy, tam, fase in ((-300, -130, 1.1, 0), (-130, -205, .7, 1.6), (272, -128, .85, 2.9), (330, 90, .6, 4.1), (-345, 88, .7, 5.1)):
         brillo = .5 + .5 * math.sin(t * 7 + fase)
         pegar(lienzo, rec.estrella, ANCHO / 2 + dx, 340 + dy, tam * (.6 + .4 * brillo), alfa * (.3 + .7 * brillo))
-    poner_hud(lienzo, rec, tarjetas, contador, avance)
+    poner_logo(lienzo, rec)
     return lienzo
 
 
@@ -505,11 +496,7 @@ def linea_de_tiempo(config, cantidad):
     return resultado, cuadro
 
 
-def contador_de(oferta, total):
-    return texto(f"Oferta {oferta} / {total}", FUENTE_MEDIA, 26, (232, 238, 248))
-
-
-def cuadros_de_escena(rec, tarjetas, escena, total):
+def cuadros_de_escena(rec, tarjetas, escena):
     tipo, indice, inicio = escena
     if tipo == "portada":
         for f in range(CUADROS_PORTADA):
@@ -518,15 +505,12 @@ def cuadros_de_escena(rec, tarjetas, escena, total):
         for f in range(CUADROS_CIERRE):
             yield escena_cierre(rec, f, inicio + f)
     elif tipo == "corte":
-        contador = contador_de(indice + 1, total)
         for f in range(CUADROS_CORTE):
-            yield escena_corte(rec, tarjetas, contador, (indice + 1) / total, f, inicio + f)
+            yield escena_corte(rec, f, inicio + f)
     else:
         tarjeta = tarjetas.cargar(indice)
-        contador = contador_de(indice + 1, total)
         for f in range(CUADROS_OFERTA):
-            avance = (indice + (f + 1) / CUADROS_OFERTA) / total
-            yield escena_oferta(rec, tarjetas, tarjeta, contador, avance, f, inicio + f)
+            yield escena_oferta(rec, tarjetas, tarjeta, f, inicio + f)
 
 
 def renderizar_tramo(args):
@@ -540,9 +524,8 @@ def renderizar_tramo(args):
     comando = ["ffmpeg", "-y", "-v", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{ANCHO}x{ALTO}",
                "-r", str(FPS), "-i", "-", *COMPARTE_ENCODE, "-threads", str(hilos), str(temporal)]
     proceso = subprocess.Popen(comando, stdin=subprocess.PIPE)
-    total = len(tarjetas.archivos)
     for escena in tramo:
-        for cuadro in cuadros_de_escena(rec, tarjetas, escena, total):
+        for cuadro in cuadros_de_escena(rec, tarjetas, escena):
             proceso.stdin.write(cuadro.tobytes())
     proceso.stdin.close()
     if proceso.wait() != 0:
@@ -558,7 +541,6 @@ def prueba(config, carpeta_tarjetas, destino):
     destino.mkdir(parents=True, exist_ok=True)
     rec = Recursos(config)
     tarjetas = Tarjetas(carpeta_tarjetas)
-    total = len(tarjetas.archivos)
     nombres = [a.stem for a in tarjetas.archivos]
     buscar = lambda sufijo: next(i for i, n in enumerate(nombres) if n.endswith(sufijo))
     for segundo in (.6, 1.7, 3.0, 4.4):
@@ -567,11 +549,10 @@ def prueba(config, carpeta_tarjetas, destino):
     casos = {"comun": buscar("p02_1"), "kelloggs": buscar("p02_2"), "2x99": buscar("p02_3")}
     for nombre, i in casos.items():
         tarjeta = tarjetas.cargar(i)
-        escena_oferta(rec, tarjetas, tarjeta, contador_de(i + 1, total), (i + .5) / total, 75, 400 + 150 * i).save(
-            destino / f"oferta-{nombre}.png")
+        escena_oferta(rec, tarjetas, tarjeta, 75, 400 + 150 * i).save(destino / f"oferta-{nombre}.png")
     tarjeta = tarjetas.cargar(buscar("p02_2"))
-    escena_oferta(rec, tarjetas, tarjeta, contador_de(6, total), .02, 5, 900).save(destino / "oferta-entrando.png")
-    escena_corte(rec, tarjetas, contador_de(20, total), 20 / total, 30, 3100).save(destino / "corte.png")
+    escena_oferta(rec, tarjetas, tarjeta, 5, 900).save(destino / "oferta-entrando.png")
+    escena_corte(rec, 30, 3100).save(destino / "corte.png")
     escena_cierre(rec, 75, 40000).save(destino / "cierre.png")
 
 
