@@ -54,6 +54,7 @@ Especificaciones (Instagram rechaza lo que no cumple):
 
 Herramientas:
 - Imágenes: Python con Pillow. Fuentes en `/usr/share/fonts/truetype/google-fonts/` (Poppins, etc.) y Inter.
+- **Logo de Grupo Avance (OBLIGATORIO con los 4 años):** `assets/logo-avance.png` (píldora blanca con "Avance GRUPO – grupo de supermercados aliados", fondo transparente, sacado del mailing; usarlo a unos 300–450 px de ancho, no más, porque la fuente es de baja resolución). **Siempre que una pieza (imagen, historia, carrusel o video) mencione los 4 años de Grupo Avance, el sello "4 AÑOS" o "Creciendo juntos", debe aparecer también este logo de Grupo Avance bien visible, junto al texto "4 años de Grupo Avance". Esto aplica a todas las piezas de noviembre con ese tema. También va el logo de Lacarry como siempre. En videos HyperFrames copiarlo junto a logo.png (`cp assets/logo-avance.png <carpeta>/`) y usar `<img src="./logo-avance.png">`.**
 - **Logo:** `assets/logo.png` es el logo oficial que mandó el dueño (círculo negro, fondo transparente; el original es de solo 150 px, así que no usarlo a más de unos 500 px de ancho). `assets/logo-con-sello.png` es una versión recortada del folleto, con el sello "Envíos a domicilio", útil cuando se quiere destacar los envíos. Poner el logo en toda pieza, bien visible pero sin tapar el contenido.
 - **Productos reales:** recortar del folleto `ofertas/AAAA-MM/folleto-*.pdf`. Renderizar la página a alta resolución (`pdftoppm -r 300 -f N -l N -png archivo.pdf salida`) y recortar con Pillow. Nunca estirar una imagen ni subirla borrosa. Las páginas están listadas en `ofertas/AAAA-MM.md`.
 - **Video con HyperFrames:** copiar `plantillas/video-vertical/` a una carpeta de trabajo (fuera del repo, por ejemplo en el scratchpad), editar `index.html` (textos, colores, animaciones GSAP, imágenes locales) y renderizar con `herramientas/render-video.sh <carpeta> <salida.mp4>`. Ya incluye `lint`, render con el Chromium local y audio silencioso AAC. Reglas de HyperFrames: cada elemento con `data-start` y `data-duration`, un timeline pausado registrado en `window.__timelines["main"]`, nada de `Math.random()` ni de `Date.now()`, y `gsap.min.js` local (no usar CDN: el entorno no tiene internet abierto). Hay documentación en `npx hyperframes docs <tema>`.
@@ -63,7 +64,7 @@ Herramientas:
 1. Ortografía y tildes correctas, español rioplatense.
 2. Cada precio coincide con `ofertas/AAAA-MM.md`. Verificarlo dos veces.
 3. La vigencia aparece si hay precios ("Ofertas hasta el 30/11 o hasta agotar stock").
-4. El logo está, nada queda cortado o ilegible, sin alcohol.
+4. El logo de Lacarry está y, si la pieza menciona los 4 años (o el sello 4 AÑOS), también el logo de Grupo Avance; nada queda cortado o ilegible, sin alcohol.
 Si algo falla, corregir y revisar de nuevo (máximo 3 intentos). Si no se logra, publicar una versión más simple y sin precios.
 
 ## Paso 3 — Epígrafe (no aplica a historias)
